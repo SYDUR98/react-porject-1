@@ -1,11 +1,35 @@
 
 
+import { Suspense } from 'react'
 import './App.css'
 import Counter from './Counter'
 import ConuntRun from './Cricket'
+import Users from './Users'
+import Player from './Player'
+import Photogallary from './PhotoGallary'
+
+// photoGallay function with useEffect useState but we don't use it
+import { useEffect,useState } from 'react'
+
+
+
+// json using .than 
+const fetchUsers = fetch('https://jsonplaceholder.typicode.com/users')
+.then(res => res.json())
+
+// player function using await()
+const playerFectchFunc = async () =>{
+  const playerFetch = await fetch('https://jsonplaceholder.typicode.com/posts');
+  return playerFetch.json()
+}
+
 
 
 function App() {
+ 
+  
+  // player function calling in App()
+  const postPromise = playerFectchFunc()
   function handleClick(){
     alert ('I am Clicked.')
   }
@@ -19,10 +43,22 @@ function App() {
   }
 
   return (
-    <>     //fragment 
-      
+    // fragment 
+    <> 
+
+    
+     
+      <Suspense fallback={<h3>Loading....</h3>}>
+        <Users fetchUsers = {fetchUsers}></Users>
+      </Suspense>   
+      <Suspense fallback= {<h4>Loading...</h4>}>
+        <Player postPromise = {postPromise}></Player>
+      </Suspense>
       <h3>React simple project</h3>
 
+
+      
+      
       <Counter></Counter>
       <ConuntRun></ConuntRun>
 
